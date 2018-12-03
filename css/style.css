@@ -198,3 +198,8 @@ footer{
   
 }
 
+/*link styling*/
+a {
+  color:#4e5259;
+  text-decoration: none;
+}
