@@ -200,6 +200,10 @@ footer{
 
 /*link styling*/
 a {
+  font-size: 35px;
   color:#4e5259;
   text-decoration: none;
 }
+ a:hover{
+   color:#efd645;
+ }
