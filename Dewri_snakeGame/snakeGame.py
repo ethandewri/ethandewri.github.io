@@ -63,7 +63,7 @@ def pause():
                     pygame.quit()
                     quit()
 
-            gameDisplay.fill(ywllow)
+            gameDisplay.fill(yellow)
             message_to_screen("Paused",
                                 black,
                                 -100,
