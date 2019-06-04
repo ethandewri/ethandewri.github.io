@@ -1,0 +1,192 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Processing Demo</title>
+<script type="text/javascript" src="./something.js"></script>
+</head>
+<body>
+
+
+<script type="text/processing">
+
+/*
+ Flappy Banana
+ Author: Ethan Dewri
+ ** The game is uploaded to my website: https://ethandewri.github.io/portfolio.html
+ 
+ This game works by:
+ -The background image (mario2.png) moving by the screen shifting and background repeating.
+ -The banana gets spawned in and gravity is added with the acceleration() function.
+ -David Hasselhoff is spawned randomly in the window. 
+ -When banana gets in contact with David, the game pauses. 
+ -The score board works by counting the amount of Davids that strive across the screen without contact.
+ -The score is stores these vaules and is typed in the screen.
+ 
+*/
+
+PFont font1;
+PImage bg;
+PImage bn;
+PImage david;
+PImage bn_bg;
+int x; int y; int Vy; int cx; int cy; int cVy;
+int gamestate;
+int count;
+int numDavid = 7;
+int score; int highScore;
+int i;
+int dx; float dy;
+
+// gamestate -1 = title screen
+// gamestate 0 = in game
+// gamestate = 1 = pause/died
+
+void setup(){
+  
+  // gamestate -1 = title screen
+  gamestate = -1;
+  size(600,600);
+  bg = loadImage("./img/mario2.PNG");
+  bn = loadImage("./img/banana2.PNG");
+  david = loadImage("./img/david.PNG");
+  bn_bg = loadImage("./img/bnBack.jpg");
+  font1 = createFont("GEORGIA", 35);
+  dx = 700;
+  x=width/4;
+  y=height/2;
+  cVy = 2;
+  cy = 100;
+  cx = 50;
+  score = 0;
+  dy = random(0,height);
+
+  }
+
+
+void draw(){
+
+  startScreen();
+  movingBG();
+  hoff();
+  bananaCode();
+  
+}
+
+void startScreen(){
+  // this is the start screen:
+  if(gamestate == -1){
+    image(bn_bg,0,0);
+    fill(255,255,255, 160);
+    textSize(16);
+    textFont(font1);
+    text("*Click the Banana to play!", 20, 40);
+    if(mousePressed && mouseX>250){
+      gamestate = 0;
+    }   
+    textFont(font1);
+    text("MOVE:  LEFT/RIGHT MOUSE", 15, 145); 
+    
+  }
+}
+
+void movingBG(){
+  //moves background continuously 
+  if(gamestate == 0){
+    image(bg, x, 0);
+    image(bg, x+bg.width, 0);
+    x--;
+  
+    if(x< -(bg.width)){
+      x=0;     
+    }
+    
+  //this is the score system
+  textSize(32);
+  text("High Score:",10,70);
+  text(highScore,190,70);
+  text(score,110,30);
+  text("Score: ", 10,30);
+
+  }
+}
+
+void bananaCode(){
+  // for gravity
+  if(gamestate ==0){
+    image(bn,cx,cy);
+    cy+=Vy; 
+    Vy++; 
+    accelerate();
+    checkBn();
+   }
+   if(gamestate ==1){
+     restart();
+   }
+}
+
+void hoff(){  
+  //this spawns david into the game
+  if(gamestate == 0){
+    
+      dx-= 2;
+      image(david, dx, dy);
+      if(dx==-100){
+        dx = 700;
+        dy = random(0,height);
+        score +=1;
+        if(highScore < score){
+          highScore+=1;
+       }
+    }
+    if(abs((int)((cx+45)-(dx+40))) < 90 && abs((int)((cy+50) - (dy+60))) < 110){ // contact with hoff
+      gamestate=1;
+      }
+    }
+}
+  
+
+void restart(){
+  // this is a button to restart the game after Banana dies
+  fill(255); //text color
+  textSize(40); //text size
+  if(mouseX < 330 && mouseX > 100 && mouseY < 245 && mouseY > 200){
+  fill(255,0,0);
+  }
+  rect(100,200, 380, 45, 10); //BACKGROUND OF BUTTON
+  fill(0);
+  if(mouseX < 330 && mouseX > 100 && mouseY < 245 && mouseY > 200){
+  fill(0,0,255);
+  }
+  text("Click to play again :)", 110,239); //TEXT ON BUTTON
+  //END BUTTON
+    if (mousePressed){  // this brings back the banana to spawn when restarted.
+      y= height/2;
+      gamestate = 0;
+      x=width/4;
+      cVy = 2;
+      cy = 100;
+      cx = 50;
+      score = 0;
+      dx = 700;
+  }
+}
+
+
+void accelerate(){
+  if(mousePressed){
+    Vy = -10; // makes it go down (gravity)
+  }
+}
+
+void checkBn(){ // this checks if banana goes out of the screen
+  if(cy>height || cy <-80){
+    gamestate = 1;
+  }
+ }
+ 
+ 
+</script>
+
+<canvas id="sketch" style="border: 1px solid black;"></canvas>
+</body>
+</html>

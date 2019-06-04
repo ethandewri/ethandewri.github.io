@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Processing Demo</title>
+<script type="text/javascript" src="./something.js"></script>
+</head>
+<body>
+
+
+<script type="text/processing">
+//Assignmet 1: make a ball bounce around the screen
+//Author: Ethan Dewri
+
+int x; int y; int r;int Vx; int Vy;
+
+void setup(){
+  size(600,700);
+  x=0;
+  y=0;
+  r=50;
+  Vx=2;
+  Vy=20;
+  
+}
+
+void draw(){
+ background(0,0,255); // starts each loop w/ a fresh slate
+ ellipse(x,y,r,r);
+ updatePosition();
+ bounce();
+ 
+}
+
+void updatePosition(){
+  x += Vx;
+  y += Vy;
+  
+}
+
+void bounce(){
+  if(x > width - r/2||x<0){  // the "||" means "or"
+    Vx*=-1;
+  }
+  if (y > height - r/2||y<0){  // the "||" means "or"
+    Vy *= -1;
+  }
+}
+
+</script>
+
+<canvas id="sketch" style="border: 1px solid black;"></canvas>
+</body>
+</html>
